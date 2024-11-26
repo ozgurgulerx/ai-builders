@@ -1,0 +1,74 @@
+site_name: cloudatlas.blog
+site_url: https://cloudatlas.blog
+
+theme:
+  name: material
+
+  features:
+    - navigation.tabs        # Enables horizontal navigation
+    - navigation.top         # Ensures the navigation is at the top
+    - navigation.instant     # Improves loading speed for tabs
+    - navigation.expand      # Expands navigation on small screens for better usability
+    - navigation.accordion   # Enables accordion-style navigation
+    - navigation.footer      # Adds next/previous navigation in the footer
+  palette:           # High-contrast slate scheme
+    primary: indigo
+    accent: indigo             # Teal for better contrast with indigo
+  font:
+    text: Roboto             # Consistent, clean sans-serif font
+    code: Roboto Mono        # Monospace font for code
+  icon:
+    logo: material/library
+  favicon: images/favicon.ico # Add a favicon for a polished look
+
+extra_css:
+  - assets/styles/custom.css # Custom CSS for advanced styling
+
+nav:
+  - Home: index.md
+  - Consulting:
+      - Consulting Services: consulting/consulting-services.md
+  - AI for Business Executives:
+      - AI for Business: ai-for-business/ai-for-business.md
+  - Writing:
+      - Top Articles: writing/top-articles.md
+      - AI Investments: writing/ai-investments.md
+      - Diffusion Transformers: writing/diffusion-transformers.md
+      - DSPy: writing/dspy.md
+      - Gaming AI: writing/gaming-ai.md
+      - Graph Neural Networks: writing/graph-neural-networks.md
+      - Graph RAG: writing/graph-rag.md
+      - Reinforcement Learning: writing/reinforcement-learning.md
+      - State Space Models: writing/state-space-models.md
+  - Books:
+      - Books: books/books.md
+  - GraphRAG:
+      - GraphRAG: graphrag/graphrag.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/your-profile
+
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.highlight
+
+
+plugins:
+  - search
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ozgurgulerx
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/ozgurgulerx
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/ozguler/
+    - icon: fontawesome/brands/medium
+      link: https://medium.com/@343544
+  footer:
+    copyright: "Copyright © 2024 Ozgur Guler"
+    navigation: true  # Enables next/previous navigation in the footer  

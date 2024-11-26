@@ -1,0 +1,10 @@
+site_name: AI Builders Documentation
+theme:
+  name: material  # Material theme
+repo_url: https://github.com/ozgurgulerx/ai-builders
+repo_name: GitHub
+nav:
+  - Home: index.md
+  - Features: features.md
+  - Setup: setup.md
+
