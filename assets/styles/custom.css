@@ -1,0 +1,295 @@
+/* General Typography */
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333333; /* Dark text for readability on white background */
+    background-color: #ffffff; /* Set background to white */
+}
+
+/* Top Banner (Navigation Bar) */
+.md-header, .md-tabs {
+    background-color: #4f46e5; /* Indigo */
+    color: #ffffff; /* White text for high contrast */
+    border-bottom: none;
+}
+
+.md-header__title {
+    color: #ffffff; /* Ensure the site name is visible */
+    font-weight: bold; /* Highlight site name */
+}
+
+.md-header__link, .md-nav__link {
+    color: #ffffff; /* White navigation links */
+    font-weight: 500; /* Slightly bold for readability */
+    transition: color 0.3s ease-in-out;
+}
+
+.md-header__link:hover, .md-nav__link:hover {
+    color: #b3c4ff; /* Slightly lighter Indigo for hover */
+}
+
+/* Sidebar Background */
+.md-sidebar {
+    background-color: #ffffff; /* White background */
+}
+
+.md-sidebar .md-nav__item--active {
+    background-color: #e0e7ff !important;
+    box-shadow: none !important;
+}
+
+.md-sidebar .md-nav__item {
+    background-color: #ffffff !important;
+}
+
+/* Sidebar Fix: Active and Non-Active States */
+.md-nav__item--active {
+    background-color: #e0e7ff !important; /* Light Indigo for active item */
+    box-shadow: none !important; /* Remove shadow effect */
+}
+
+.md-nav__item {
+    background-color: #ffffff; /* Ensure non-active items have white background */
+}
+
+.md-nav__link {
+    color: #4f46e5; /* Indigo text for links */
+}
+
+/* Active Navigation Link */
+.md-nav__link--active {
+    background-color: #e0e7ff; /* Light Indigo for active item */
+    color: #4f46e5; /* Indigo text */
+    border-bottom: 3px solid #ffb74d; /* Orange underline */
+    box-shadow: none; /* Remove shadow */
+}
+
+/* Sidebar Links Hover */
+.md-nav__link:hover {
+    background-color: #f3f4f6; /* Light gray on hover */
+    color: #4f46e5; /* Indigo text */
+}
+
+/* Remove Shadow from Sidebar */
+.md-nav {
+    box-shadow: none !important; /* Remove any lingering shadows */
+}
+
+
+.md-sidebar__link {
+    color: #4f46e5; /* Dark text for visibility */
+}
+
+.md-sidebar__link:hover {
+    color: #4f46e5; /* Indigo hover effect */
+}
+
+/* Main Content Area */
+.md-content {
+    padding: 20px; /* Add some spacing around the content */
+}
+
+/* Headings */
+.md-content h1 {
+    color: #6B5CFB;; /* Indigo for high contrast */
+    font-weight: bold;
+    font-size: 2.5rem;
+    text-align: left; /* Center align for better focus */
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.md-content h2, .md-content h3, .md-content h4 {
+    color: #333333; /* Use dark text for other headings */
+    font-weight: 600;
+}
+
+/* Hero Section */
+.hero {
+    background: #ffffff; /* White background */
+    color: #333333; /* Dark text for readability */
+    padding: 50px 20px;
+    text-align: center;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for separation */
+}
+
+.hero h1 {
+    color: #4f46e5; /* Indigo for high contrast */
+    font-weight: bold;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    color: #333333; /* Dark grey for description */
+}
+
+.hero a {
+    margin-top: 20px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4f46e5; /* Indigo */
+    color: #ffffff; /* White text */
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.hero a:hover {
+    background-color: #ffb74d; /* Accent color */
+    color: #ffffff; /* Keep text white on hover */
+}
+
+/* Buttons */
+.button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.button-primary {
+    background-color: transparent;
+    color: #4f46e5; /* Indigo */
+    border: 2px solid #4f46e5;
+}
+
+.button-primary:hover {
+    background-color: #4338ca; /* Darker Indigo */
+    color: #ffffff !important; /* Keep white text on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button-secondary {
+    background-color: transparent;
+    color: #4f46e5; /* Indigo */
+    border: 2px solid #4f46e5;
+}
+
+.button-secondary:hover {
+    background-color: #4338ca; /* Darker Indigo */
+    color: #ffffff !important; /* Keep white text on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Adjustments for Footer */
+.md-footer {
+    background-color: #a5b4fc !important; /* Lighter Indigo */
+    color: #333333; /* Dark text for readability */
+    padding: 20px 10px; /* Increased padding for clarity */
+    text-align: center;
+    border-top: none; /* Remove border if present */
+    font-size: 14px;
+    line-height: 1.6;
+    position: relative; /* Ensure proper stacking */
+    z-index: 10; /* Prevent overlap issues */
+}
+
+/* Ensure Footer Content Stacks */
+.md-footer__wrapper {
+    background-color: #a5b4fc; /* Match footer background */
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column; /* Stack elements */
+    align-items: center; /* Center content */
+    gap: 10px; /* Add spacing between elements */
+}
+
+/* Styling for Default Footer Message */
+.md-footer .md-footer__credits {
+    font-size: 12px;
+    color: #333333; /* Match overall text color */
+    margin-top: 10px;
+}
+
+/* Custom Footer Message */
+.md-footer .custom-footer-message {
+    font-size: 14px;
+    color: #4f46e5; /* Indigo for contrast */
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* Footer Links */
+.md-footer a {
+    color: #4f46e5; /* Indigo links */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.md-footer a:hover {
+    color: #4338ca; /* Darker Indigo on hover */
+    text-decoration: underline;
+}
+
+/* Footer Social Icons */
+.md-footer .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.md-footer .social-icons a {
+    color: #ffffff;
+    font-size: 18px;
+}
+
+.md-footer .social-icons a:hover {
+    color: #e0e7ff; /* Lighter Indigo hover */
+}
+
+/* Footer Navigation */
+.md-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333333;
+}
+
+.md-footer-nav .md-footer-nav__link {
+    color: #4f46e5; /* Indigo navigation links */
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.md-footer-nav .md-footer-nav__link:hover {
+    color: #4338ca; /* Darker Indigo on hover */
+    text-decoration: underline;
+}
+
+/* Fix Overlap */
+/* Fix Overlap */
+.md-footer-container {
+    margin-top: 40px; /* Add sufficient space between sections */
+    position: relative;
+    z-index: 1;
+}
+
+
+/* Adjust Bottom Bar */
+.md-footer__bar {
+    background-color: #7f9cf5; /* Match a slightly darker Indigo */
+    padding: 10px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 12px;
+    z-index: 2;
+}
+/* Append Custom Footer Content */
+.md-footer__credits::after {
+    content: " | Copyright © 2024 Ozgur Guler";
+    color: #4f46e5;
+    font-weight: bold;
+}
