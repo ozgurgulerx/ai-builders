@@ -40,7 +40,7 @@ async def main():
                 "type": "session.update",
                 "session": {
                     "voice": "alloy",
-                    "instructions": "Tell a brief, engaging story about a curious robot discovering music for the first time. Keep it under 30 seconds.",
+                    "instructions": "Tell a brief, engaging story about a curious robot lost in a busy city. Keep it under 30 seconds.",
                     "modalities": ["audio", "text"],
                     "input_audio_format": "pcm16",
                     "output_audio_format": "pcm16",
