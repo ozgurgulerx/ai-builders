@@ -11,10 +11,6 @@
         <link rel="canonical" href="https://ai-craft.cloud/part1/uc1/">
       
       
-        <link rel="prev" href="../part1/">
-      
-      
-        <link rel="next" href="../uc2/">
       
       
       <link rel="icon" href="../../images/favicon.ico">
@@ -22,7 +18,7 @@
     
     
       
-        <title>UC1 Hyper-personalised Customer Support Call Center - AI Builders - Protoyping for Digital Natives</title>
+        <title>Index - AI Builders - Protoyping for Digital Natives</title>
       
     
     
@@ -73,6 +69,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#uc1-building-with-azureopenai-realtime-api" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -103,7 +104,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              UC1 Hyper-personalised Customer Support Call Center
+              Index
             
           </span>
         </div>
@@ -187,12 +188,10 @@
         
   
   
-    
-  
   
     
     
-      <li class="md-tabs__item md-tabs__item--active">
+      <li class="md-tabs__item">
         <a href="../part1/" class="md-tabs__link">
           
   
@@ -297,28 +296,25 @@
       
   
   
-    
   
   
-  
     
     
     
       
-        
-        
-      
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
             
   
   <span class="md-ellipsis">
@@ -329,7 +325,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             1. Part1 - SOTA use-cases
@@ -361,17 +357,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../uc1.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -380,7 +369,6 @@
   
 
       </a>
-      
     </li>
   
 
@@ -393,7 +381,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../uc2/" class="md-nav__link">
+      <a href="../uc2.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -414,7 +402,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../uc3/" class="md-nav__link">
+      <a href="../uc3.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -589,6 +577,38 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#uc1-building-with-azureopenai-realtime-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      UC1 - Building with AzureOpenAI realtime API
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UC1 - Building with AzureOpenAI realtime API">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#get-the-real-time-api-working" class="md-nav__link">
+    <span class="md-ellipsis">
+      Get the real-time API working
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -602,10 +622,15 @@
                   
 
 
-  <h1>UC1 Hyper-personalised Customer Support Call Center</h1>
+  <h1>Index</h1>
 
-<p>In the age of GenAI why not build a Customer Call Center that can understand the customer's mood and intent, and respond accordingly?</p>
-<p><a href="https://github.com/ozgurgulerx/ai-builders/blob/main/part1/p1uc1/README.md">Let's start building...</a></p>
+<h2 id="uc1-building-with-azureopenai-realtime-api">UC1 - Building with AzureOpenAI realtime API</h2>
+<p>In this section we will build a hyperpersonalised customer support call center using Azure OpenAI real-time API and Azure AI Foundry Agents.
+Let's start...</p>
+<p>In this use-case customer will call a </p>
+<h3 id="get-the-real-time-api-working"><a href="./p1uc1_realtimeapi.ipynb">Get the real-time API working</a></h3>
+<p>We will make a successfull live call to the real-time API and play the response back. \
+With this step we will make sure the underlying resources such a model deployments, API keys / endpoints are correctly configured to build more sophisticated interactions on them in subsequent steps.</p>
 
 
 
@@ -636,44 +661,6 @@
       
         <footer class="md-footer">
   
-    
-      
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
-        
-          
-          <a href="../part1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: SOTA use-cases">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              <div class="md-ellipsis">
-                SOTA use-cases
-              </div>
-            </div>
-          </a>
-        
-        
-          
-          <a href="../uc2/" class="md-footer__link md-footer__link--next" aria-label="Next: UC2 Automated Video Story Telling">
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              <div class="md-ellipsis">
-                UC2 Automated Video Story Telling
-              </div>
-            </div>
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
-            </div>
-          </a>
-        
-      </nav>
     
   
   <div class="md-footer-meta md-typeset">
