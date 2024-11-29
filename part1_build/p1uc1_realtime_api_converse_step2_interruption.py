@@ -11,15 +11,20 @@ class AudioProcessor:
     def __init__(self, sample_rate=24000):
         self.sample_rate = sample_rate
         self.vad_threshold = 0.015
+        self.interrupt_threshold = 0.03
         self.speech_frames = 0
         self.silence_frames = 0
+        self.interrupt_frames = 0
         self.min_speech_duration = int(0.3 * sample_rate)
         self.max_silence_duration = int(0.8 * sample_rate)
+        self.interrupt_duration = int(0.4 * sample_rate)
         self.buffer = []
         self.is_speaking = False
         self.speech_detected = False
+        self.latest_audio = None
 
     def process_audio(self, indata):
+        self.latest_audio = indata
         if self.is_speaking:
             return
 
@@ -35,6 +40,19 @@ class AudioProcessor:
             if self.silence_frames < self.max_silence_duration:
                 self.buffer.extend(indata.tobytes())
 
+    def check_interruption(self):
+        if not self.is_speaking or self.latest_audio is None:
+            return False
+            
+        audio_level = np.abs(self.latest_audio).mean() / 32768.0
+        
+        if audio_level > self.interrupt_threshold:
+            self.interrupt_frames += len(self.latest_audio)
+        else:
+            self.interrupt_frames = 0
+            
+        return self.interrupt_frames >= self.interrupt_duration
+
     def should_process(self):
         return (self.speech_detected and 
                 self.speech_frames >= self.min_speech_duration and 
@@ -43,6 +61,7 @@ class AudioProcessor:
     def reset(self):
         self.speech_frames = 0
         self.silence_frames = 0
+        self.interrupt_frames = 0
         self.speech_detected = False
         audio_data = bytes(self.buffer)
         self.buffer.clear()
@@ -125,6 +144,12 @@ class ConversationSystem:
         
         try:
             while True:
+                if self.audio_processor.check_interruption():
+                    print("Interrupted!")
+                    # Optional: Send interruption signal to websocket
+                    await websocket.send(json.dumps({"type": "interrupt"}))
+                    break
+                
                 response = json.loads(await websocket.recv())
                 
                 if response["type"] == "response.audio.delta":
