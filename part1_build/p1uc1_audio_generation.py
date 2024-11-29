@@ -1,173 +1,150 @@
-import websockets
 import asyncio
 import os
 import base64
 import json
 from dotenv import load_dotenv
+import websockets
 import numpy as np
-import soundfile as sf  # Change to soundfile for better audio handling
+import sounddevice as sd
 
 # Load environment variables
 load_dotenv()
 
-# Retrieve API key and WebSocket URL
-api_key = os.getenv("AZURE_OPENAI_API_KEY")
-wss_url = f"wss://aoai-ep-swedencentral02.openai.azure.com/openai/realtime?api-version=2024-10-01-preview&deployment=gpt-4o-realtime-preview&api-key={api_key}"
+async def main():
+    api_key = os.getenv("AZURE_OPENAI_API_KEY")
+    if not api_key:
+        print("Error: AZURE_OPENAI_API_KEY is not set.")
+        return
 
-if not api_key:
-    raise ValueError("AZURE_OPENAI_API_KEY not found. Ensure it is set in the .env file.")
+    url = (
+        f"wss://aoai-ep-swedencentral02.openai.azure.com/openai/realtime?"
+        "api-version=2024-10-01-preview&deployment=gpt-4o-realtime-preview&api-key="
+        f"{api_key}"
+    )
 
-# Folder to save audio responses
-AUDIO_OUTPUT_FOLDER = "audio_responses"
-os.makedirs(AUDIO_OUTPUT_FOLDER, exist_ok=True)
-
-def save_audio_response(audio_data, filename="response.wav", sample_rate=24000):
-    filepath = os.path.join(AUDIO_OUTPUT_FOLDER, filename)
+    # Set up audio output stream
     try:
-        # Convert to numpy array and ensure int16 dtype
-        audio_array = np.frombuffer(audio_data, dtype=np.int16)
-        sf.write(filepath, audio_array, sample_rate, subtype='PCM_16')
-        
-        file_size = os.path.getsize(filepath)
-        print(f"Audio saved to {filepath} (size: {file_size} bytes)")
-        return True
+        stream = sd.OutputStream(samplerate=24000, channels=1, dtype=np.int16)
+        stream.start()
+        print("Audio stream started")
     except Exception as e:
-        print(f"Error saving audio file: {e}")
-        return False
+        print(f"Error initializing audio stream: {e}")
+        return
 
-async def interact_with_api():
-    audio_chunks = []  # Changed to list for collecting chunks
-    complete_text = ""
-    
     try:
-        async with websockets.connect(wss_url) as websocket:
-            print("Connected to the realtime endpoint")
+        async with websockets.connect(url) as ws:
+            print("Connected to the API WebSocket")
 
-            # Step 1: Initialize session
-            session_update = {
+            # Step 1: Send session update
+            session_payload = {
                 "type": "session.update",
                 "session": {
                     "voice": "alloy",
-                    "instructions": "Respond briefly and to the point. Provide a concise and engaging response.",
+                    "instructions": "Tell a brief, engaging story about a curious robot discovering music for the first time. Keep it under 30 seconds.",
+                    "modalities": ["audio", "text"],
                     "input_audio_format": "pcm16",
                     "output_audio_format": "pcm16",
-                    "turn_detection": {"type": "none"},
-                    "temperature": 0.7,
-                    "max_response_output_tokens": 50,
+                    "turn_detection": {
+                        "type": "server_vad",
+                        "threshold": 0.5,
+                        "prefix_padding_ms": 300,
+                        "silence_duration_ms": 200
+                    }
                 }
             }
-            await websocket.send(json.dumps(session_update))
+            await ws.send(json.dumps(session_payload))
             print("Session update sent")
 
-            # Handle session initialization
-            session_created = False
-            while not session_created:
-                response = await websocket.recv()
+            # Wait for session.created
+            while True:
+                response = await ws.recv()
                 data = json.loads(response)
-                print(f"Session response: {data}")
-                
+                print(f"Session response: {json.dumps(data, indent=2)}")
                 if data.get("type") == "session.created":
-                    session_created = True
-                    session_id = data.get("session", {}).get("id")
-                    print(f"Session created: {session_id}")
+                    break
                 elif data.get("type") == "error":
-                    raise Exception(f"Session error: {data}")
+                    print("Error creating session")
+                    return
 
-            # Step 2: Create conversation item
-            conversation_item = {
+            # Step 2: Send user message
+            message_payload = {
                 "type": "conversation.item.create",
                 "item": {
                     "type": "message",
                     "role": "user",
-                    "content": [
-                        {
-                            "type": "input_text",
-                            "text": "Tell me an interesting fact about space!"
-                        }
-                    ],
+                    "content": [{"type": "input_text", "text": "Speak now."}]
                 }
             }
-            await websocket.send(json.dumps(conversation_item))
-            print("Conversation item sent")
+            await ws.send(json.dumps(message_payload))
+            print("User message sent")
 
-            # Wait for conversation item creation confirmation
-            item_created = False
-            while not item_created:
-                response = await websocket.recv()
+            # Wait for conversation.item.created
+            while True:
+                response = await ws.recv()
                 data = json.loads(response)
-                print(f"Conversation response: {data}")
+                print(f"Message response: {json.dumps(data, indent=2)}")
                 if data.get("type") == "conversation.item.created":
-                    item_created = True
-                    print("Conversation item created")
+                    break
                 elif data.get("type") == "error":
-                    raise Exception(f"Conversation error: {data}")
+                    print("Error creating message")
+                    return
 
             # Step 3: Request response
-            response_create = {
+            response_payload = {
                 "type": "response.create",
-                "response": {
-                    "modalities": ["audio", "text"]
-                }
+                "response": {"modalities": ["audio", "text"]}
             }
-            await websocket.send(json.dumps(response_create))
+            await ws.send(json.dumps(response_payload))
             print("Response requested")
 
-            # Process response stream
-            response_started = False
+            # Step 4: Stream audio response
+            print("Streaming audio...")
+            audio_buffer = []
             while True:
                 try:
-                    response = await websocket.recv()
+                    response = await ws.recv()
                     data = json.loads(response)
-                    print(f"Stream message: {data.get('type')}")
                     
-                    if data.get("type") == "response.created":
-                        response_started = True
-                        print("Response creation confirmed")
-                        continue
-
-                    if not response_started:
-                        continue
-
-                    if data.get("type") == "response.audio.delta":
-                        raw_data = data.get("data", "")
-                        print(f"Received audio data chunk of length: {len(raw_data)}")
-                        if raw_data:
-                            audio_data = base64.b64decode(raw_data)
-                            audio_chunks.append(audio_data)  # Append chunks instead of extending
-                            print(f"Processed audio chunk: {len(audio_data)} bytes")
-                    
-                    elif data.get("type") == "response.text.delta":
-                        text_delta = data.get("data", "")
-                        complete_text += text_delta
-                        print(f"Text received: {text_delta}", end="", flush=True)
-                    
-                    elif data.get("type") in ["response.audio.done", "response.done"]:
-                        print("\nResponse complete")
+                    if data["type"] == "response.audio.delta":
+                        audio_data = data.get("delta", "")
+                        if audio_data:
+                            try:
+                                # Remove any non-base64 characters and pad if necessary
+                                audio_data = audio_data.replace(" ", "").replace("\n", "")
+                                padding = 4 - (len(audio_data) % 4)
+                                if padding != 4:
+                                    audio_data += "=" * padding
+                                
+                                # Decode and play audio
+                                audio_bytes = base64.b64decode(audio_data)
+                                audio = np.frombuffer(audio_bytes, dtype=np.int16)
+                                stream.write(audio)
+                                print(".", end="", flush=True)
+                            except Exception as decode_error:
+                                print(f"\nError decoding audio: {decode_error}")
+                        
+                    elif data["type"] == "response.done":
+                        print("\nAudio streaming completed")
                         break
-                    
-                    elif data.get("type") == "error":
-                        print(f"Error in stream: {data}")
+                    elif data["type"] == "error":
+                        print(f"Error response received: {json.dumps(data, indent=2)}")
                         break
 
                 except Exception as e:
-                    print(f"Error processing stream message: {e}")
+                    print(f"Error during audio streaming: {e}")
                     break
 
-    except websockets.exceptions.ConnectionClosed as e:
-        print(f"WebSocket connection closed: {e}")
+    except websockets.exceptions.InvalidStatusCode as e:
+        print(f"WebSocket connection failed: {e}")
     except Exception as e:
         print(f"Error: {e}")
     finally:
-        if audio_chunks:
-            # Combine all chunks into one audio stream
-            complete_audio = b''.join(audio_chunks)
-            if len(complete_audio) > 0:
-                print(f"\nSaving audio response ({len(complete_audio)} bytes)")
-                save_audio_response(complete_audio)
-            print(f"Complete text response: {complete_text}")
-        else:
-            print("No audio data received")
-            print(f"Final text response: {complete_text}")
+        # Clean up audio stream
+        await asyncio.sleep(1)  # Allow final audio to play
+        stream.stop()
+        stream.close()
+        print("Audio stream closed")
 
 if __name__ == "__main__":
-    asyncio.run(interact_with_api())
+    print("Starting real-time API test...")
+    asyncio.run(main())
