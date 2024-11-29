@@ -11,17 +11,16 @@ class AudioProcessor:
     def __init__(self, sample_rate=24000):
         self.sample_rate = sample_rate
         self.vad_threshold = 0.015
-        self.interrupt_threshold = 0.03
+        self.interrupt_threshold = 0.02
         self.speech_frames = 0
         self.silence_frames = 0
-        self.interrupt_frames = 0
         self.min_speech_duration = int(0.3 * sample_rate)
         self.max_silence_duration = int(0.8 * sample_rate)
-        self.interrupt_duration = int(0.4 * sample_rate)
         self.buffer = []
         self.is_speaking = False
         self.speech_detected = False
         self.latest_audio = None
+        self.was_interrupted = False  # Track interruption state
 
     def process_audio(self, indata):
         self.latest_audio = indata
@@ -43,15 +42,8 @@ class AudioProcessor:
     def check_interruption(self):
         if not self.is_speaking or self.latest_audio is None:
             return False
-            
         audio_level = np.abs(self.latest_audio).mean() / 32768.0
-        
-        if audio_level > self.interrupt_threshold:
-            self.interrupt_frames += len(self.latest_audio)
-        else:
-            self.interrupt_frames = 0
-            
-        return self.interrupt_frames >= self.interrupt_duration
+        return audio_level > self.interrupt_threshold
 
     def should_process(self):
         return (self.speech_detected and 
@@ -61,7 +53,6 @@ class AudioProcessor:
     def reset(self):
         self.speech_frames = 0
         self.silence_frames = 0
-        self.interrupt_frames = 0
         self.speech_detected = False
         audio_data = bytes(self.buffer)
         self.buffer.clear()
@@ -126,6 +117,19 @@ class ConversationSystem:
             if response["type"] == "error":
                 raise Exception(f"Session setup failed: {response}")
 
+    async def handle_interruption(self, websocket):
+        print("Interrupted!")
+        # First cancel the current response
+        await websocket.send(json.dumps({
+            "type": "response.cancel"
+        }))
+        # Then clear the conversation context
+        await websocket.send(json.dumps({
+            "type": "conversation.item.truncate",
+            "position": 0  # Clear all items
+        }))
+        self.audio_processor.was_interrupted = True
+
     async def send_audio(self, websocket, audio_data):
         audio_base64 = base64.b64encode(audio_data).decode('utf-8')
         
@@ -141,13 +145,10 @@ class ConversationSystem:
 
     async def handle_response(self, websocket):
         self.audio_processor.is_speaking = True
-        
         try:
             while True:
                 if self.audio_processor.check_interruption():
-                    print("Interrupted!")
-                    # Optional: Send interruption signal to websocket
-                    await websocket.send(json.dumps({"type": "interrupt"}))
+                    await self.handle_interruption(websocket)
                     break
                 
                 response = json.loads(await websocket.recv())
