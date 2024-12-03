@@ -1,0 +1,44 @@
+# Health Insurance Policy Documents
+
+## Customer Number: 12345
+Policy Holder Information
+- Name: John Smith
+- Policy Number: POL001
+- Customer Number: 12345
+- Effective Date: January 1, 2024
+- Plan Type: Premium Health Insurance Plan
+
+### Coverage Summary
+This Premium Health Insurance Plan offers comprehensive coverage designed for individuals seeking extensive health protection. The policy carries a $1,500 annual deductible and $5,000 out-of-pocket maximum. Most in-network services are covered at 80-90% after meeting the deductible, while out-of-network services typically receive 50-60% coverage.
+
+### Specific Condition Coverage
+
+#### Diabetes Management
+This policy provides comprehensive diabetes care coverage:
+- Primary Care Visits: $25 copay, 90% coverage after deductible
+- Endocrinologist Visits: $40 copay, 90% coverage after deductible
+- Insulin: $15 copay for 90-day supply
+- Blood Glucose Monitoring: 90% coverage for supplies and equipment
+- Diabetes Education: Fully covered, up to 6 sessions annually
+- Nutritionist Consultations: $30 copay, 8 visits per year
+- Continuous Glucose Monitors: 90% coverage with pre-authorization
+
+Additional Diabetes Benefits:
+- No waiting period for coverage
+- Annual eye exam fully covered
+- Foot care coverage included
+- Pre-authorization not required for standard care
+
+#### Cardiovascular Care
+Comprehensive heart and circulatory system coverage includes:
+- Cardiology Visits: $45 copay, 85% coverage after deductible
+- Diagnostic Tests: 90% coverage for EKGs, stress tests
+- Emergency Cardiac Care: 90% coverage after deductible
+- Rehabilitation Programs: 85% coverage, up to 36 sessions
+- Blood Pressure Medications: $25 copay for 30-day supply
+- Cholesterol Medications: $25 copay for 30-day supply
+
+Special Provisions:
+- Emergency room visits covered at 85%
+- Pre-authorization required for non-emergency procedures
+- Cardiac imaging covered at 90%
