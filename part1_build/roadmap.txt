@@ -1,0 +1,6 @@
+Voice 
+- Voice Interruption Handling 
+- Better context management 
+
+Agency 
+- Adding agency and action taking... 
